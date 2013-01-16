@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="deploy">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/lib/deploy" />
+      <root url="file://$PROJECT_DIR$/lib/deploy" />
+      <root url="file://$PROJECT_DIR$/lib/deploy" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/lib/deploy" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/lib/deploy" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/lib/deploy" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/lib/deploy" recursive="false" type="SOURCES" />
+  </library>
+</component>

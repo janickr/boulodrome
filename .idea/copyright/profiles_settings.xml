@@ -1,0 +1,13 @@
+<component name="CopyrightManager">
+  <settings default="">
+    <module2copyright>
+      <element module="All" copyright="MIT" />
+    </module2copyright>
+    <LanguageOptions name="CSS">
+      <option name="fileTypeOverride" value="1" />
+    </LanguageOptions>
+    <LanguageOptions name="JavaScript">
+      <option name="fileTypeOverride" value="1" />
+    </LanguageOptions>
+  </settings>
+</component>

@@ -1,0 +1,52 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 90%;
+    width: 100%
+}
+
+h1 {
+    padding: 1em 0 0.5em 0;
+    font-size: 200%;
+    text-align: center;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 150%;
+    text-align: center;
+}
+
+
+#leaderboard th, #leaderboard td {
+    width: 5em;
+    text-align: right;
+    padding: 0.2em 0.5em 0.2em 0.5em;
+}
+
+#competitions table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#newCompetition {
+    width: 400px;
+    margin-left:  auto;
+    margin-right:  auto;
+    padding-top: 5em;
+}
+
+#leaderboard {
+    float: left;
+    margin-right: 5em;
+}
+
+#leaderboard table {
+    margin-bottom: 1em;
+}
+
+#games td{
+    text-align: center;
+}
+#games th{
+    padding-bottom: 0.2em;
+}
