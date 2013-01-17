@@ -35,8 +35,7 @@ import java.util.*;
 import static be.janickreynders.boulodrome.DataAccessUtils.*;
 import static be.janickreynders.boulodrome.JsonUtils.json;
 import static be.janickreynders.bubblegum.Filters.catchAndHandle;
-import static be.janickreynders.bubblegum.Filters.vary;
-import static be.janickreynders.bubblegum.Handlers.*;
+import static be.janickreynders.bubblegum.Handlers.status;
 import static be.janickreynders.bubblegum.Matchers.accept;
 import static java.util.Collections.singletonMap;
 
@@ -60,7 +59,13 @@ public class App implements be.janickreynders.bubblegum.App {
             }
         });
 
-        on.get("/competitions/:id", accept("text/html"), response(forward("/competition.jsp"), vary("Accept")));
+        on.get("/competitions/:id", accept("text/html"), new Handler() {
+            @Override
+            public void handle(Request req, Response resp) throws Exception {
+                resp.vary("Accept");
+                req.forward("/competition.jsp", resp);
+            }
+        });
 
         on.get("/competitions/:id", json, new Handler() {
             @Override
