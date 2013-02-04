@@ -91,6 +91,7 @@
         _.each(data, function(player) {
             players.append(template(player));
         });
+        $('#submitbutton').removeAttr('disabled');
     }
 
     function renderGames(data) {
@@ -130,6 +131,7 @@
 
         $("#addGame").click(function() {
             $.post("/competitions/"+competitionId+'/games', $("#games form").serialize(), getParticipants, "json")
+            $("#addGame").attr("disabled", "disabled");
         })
 
     }
@@ -158,6 +160,7 @@
     getParticipants();
 
     function postParticipant() {
+        $("#submitbutton").attr("disabled", "disabled");
         $.post("/competitions/" + competitionId + '/participants', $("#addParticipant").serialize(), getParticipants, "json");
         $("#addParticipant input:text").val("");
         return false;
