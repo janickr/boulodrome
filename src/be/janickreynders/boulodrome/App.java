@@ -124,8 +124,6 @@ public class App implements be.janickreynders.bubblegum.App {
                 Key key = getKey(req, "id");
                 DatastoreService datastore = datastore();
 
-                Entity competition = datastore.get(key);
-                inc(competition, "participants");
                 Entity participant = new Entity("Participant", key);
                 participant.setProperty("rating", 1000);
                 participant.setProperty("played", 0);
