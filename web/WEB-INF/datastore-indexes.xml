@@ -31,4 +31,8 @@
         <property name="timeMillis" direction="asc"/>
         <property name="creationTime" direction="asc"/>
     </datastore-index>
+    <datastore-index kind="Participant" ancestor="true" source="manual">
+        <property name="rating" direction="desc"/>
+        <property name="won" direction="desc"/>
+    </datastore-index>
 </datastore-indexes>

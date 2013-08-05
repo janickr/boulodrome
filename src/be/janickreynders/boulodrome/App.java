@@ -153,7 +153,7 @@ public class App implements be.janickreynders.bubblegum.App {
     }
 
     private Iterable<Entity> getParticipants(Key id, DatastoreService datastore) {
-        return list(new Query("Participant", id), datastore);
+        return list(new Query("Participant", id).addSort("rating", Query.SortDirection.DESCENDING).addSort("won", Query.SortDirection.DESCENDING), datastore);
     }
 
     private void addAllParams(Request request, Entity entity) {
