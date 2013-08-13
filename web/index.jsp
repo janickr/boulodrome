@@ -35,6 +35,7 @@
 <body>
 <h1>Boulodrome</h1>
 <h2>Petanque competition stats made easy</h2>
+<div style="width: 100%;text-align: center;font-size: smaller;padding: 4px;margin-top: 5px">powered by <a href="http://janickreynders.be/bubblegum/">bubblegum</a></div>
 
 
 <div id="newCompetition">

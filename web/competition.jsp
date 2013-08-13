@@ -64,7 +64,7 @@
 </div>
 <div id="games">
     <form accept-charset="utf-8" method="POST" action="/games/competitionId">
-    <table>
+        <table>
         <thead>
         </thead>
         <tbody></tbody>
@@ -72,6 +72,7 @@
     </form>
 </div>
 
+<div style="width: 100%;text-align: center;font-size: smaller;padding: 4px;margin-top: 50px;clear: both">powered by <a href="http://janickreynders.be/bubblegum/">bubblegum</a></div>
 <script type="text/javascript">
     var competitionId = '<c:out value="${bubblegumParams.id}"/>';
     _.templateSettings = {
