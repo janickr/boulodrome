@@ -95,10 +95,15 @@
         var players = $('#leaderboard tbody');
 
         players.empty();
-        var template = _.template('<td>{{ name }}</td><td>{{ (won) ? (won*100/played).toFixed(2) : 0 }}%</td><td>{{ won || 0 }}</td><td>{{ played }}</td><td>{{ percentagePlayed || 100 }}%</td><td>{{ displayRating || rating }}</td>');
         _.each(data, function(player) {
             playerHtml = player.rating > 0 ? '<tr style="color: black">' : '<tr style="color: grey">';
-            playerHtml += template(player);
+            playerHtml += '<td>' + player.name + '</td><td>' + ((player.won) ? (player.won*100/player.played).toFixed(2) : 0) +'%</td><td>'+ (player.won || 0) +'</td><td>'+ player.played +'</td>';
+            if ('percentagePlayed' in player) {
+                playerHtml += '<td>'+player.percentagePlayed+'%</td>';
+            } else {
+                playerHtml += '<td>?</td>';
+            }
+            playerHtml += '<td>' + (player.displayRating || player.rating) +'</td>'
             if (player.played == 0) {
                 playerHtml += '<td style="width:20px"><img src="/img/sharp_grey_action_delete.png" alt="delete" onclick="deletePlayer(\''+player.id+'\')"></td>';
             }
