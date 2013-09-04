@@ -75,6 +75,21 @@ public class App implements be.janickreynders.bubblegum.App {
             }
         });
 
+
+        on.post("/competitions/:id", json, new Handler() {
+            @Override
+            public void handle(Request req, Response resp) throws Exception {
+                DatastoreService datastore = datastore();
+                Key competitionId = getKey(req, "id");
+                Entity competition = datastore.get(competitionId);
+                addAllParams(req, competition);
+                datastore.put(competition);
+                updateParticipantStats(competitionId, datastore);
+
+                resp.ok(json(competition));
+            }
+        });
+
         on.get("/competitions/:id/games", json, new Handler() {
             @Override
             public void handle(Request req, Response resp) throws IOException {
@@ -118,6 +133,15 @@ public class App implements be.janickreynders.bubblegum.App {
             }
         });
 
+        on.delete("/competitions/:id/participants/:participantId", json, new Handler() {
+
+            @Override
+            public void handle(Request req, Response resp) throws Exception {
+                datastore().delete(getKey(req, "participantId"));
+            }
+        });
+
+
         on.post("/competitions/:id/participants", json, new Handler() {
             @Override
             public void handle(Request req, Response resp) throws Exception {
@@ -125,9 +149,11 @@ public class App implements be.janickreynders.bubblegum.App {
                 DatastoreService datastore = datastore();
 
                 Entity participant = new Entity("Participant", key);
-                participant.setProperty("rating", 1000);
+                participant.setProperty("rating", 0);
                 participant.setProperty("played", 0);
                 participant.setProperty("won", 0);
+                participant.setProperty("percentagePlayed", 0);
+                participant.setProperty("displayRating", 1000);
                 addAllParams(req, participant);
                 datastore.put(participant);
                 resp.ok(jsonEntityID(participant));
@@ -166,17 +192,25 @@ public class App implements be.janickreynders.bubblegum.App {
         Iterable<Entity> participants = getParticipants(competitionId, datastore);
         Map<String, Player.Individual> players = getPlayers(participants);
 
+        int totalGames = 0;
+
         Competition c = new Competition();
         for (Entity game : games) {
             c.playGame(new Player.Team(getPlayers(game, "winners", players)), new Player.Team(getPlayers(game, "losers", players)));
+            totalGames++;
         }
 
+        String percentagePlayedThreshold = (String) datastore.get(competitionId).getProperty("percentagePlayedThreshold");
+        int minimumPercentagePlayed = (percentagePlayedThreshold != null && !percentagePlayedThreshold.isEmpty()) ? Integer.valueOf(percentagePlayedThreshold) : 0;
         for (Entity participant : participants) {
             String name = (String) participant.getProperty("name");
             Player.Individual player = players.get(name);
-            participant.setProperty("rating", player.getRating());
+            int percentagePlayed = player.getPlayed() * 100 / totalGames;
+            participant.setProperty("rating", (percentagePlayed >= minimumPercentagePlayed) ? player.getRating() : 0);
+            participant.setProperty("displayRating", player.getRating());
             participant.setProperty("played", player.getPlayed());
             participant.setProperty("won", player.getWon());
+            participant.setProperty("percentagePlayed", percentagePlayed);
             datastore.put(participant);
         }
     }

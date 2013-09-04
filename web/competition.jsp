@@ -37,6 +37,12 @@
 </head>
 <body>
 <h1></h1>
+<div style="text-align: center"><a href="#" id="openConfiguration">configure</a></div>
+<form accept-charset="utf-8" method="POST" id="configureCompetition" style="display:none; width:500px; margin-left: auto; margin-right: auto;">
+    <p><label for="competitionName">Name of the competition:</label> <input type="text" name="name" id="competitionName" style="width: 100%"/></p>
+    <br><p><label for="percentagePlayedThreshold">Percentage of games you need to play to take your place in the player statistics (0%-100%):</label> <input type="text" size="4" name="percentagePlayedTreshold" id="percentagePlayedThreshold"/></p>
+    <br><div style="text-align: right"><input type="button" id="cancelConfig" value="Cancel"/><input type="button" id="saveConfig" value="Save Changes"/></div>
+</form>
 
 <div id="leaderboard">
     <table>
@@ -46,6 +52,7 @@
                 <th>Win ratio</th>
                 <th>Games won</th>
                 <th>Games played</th>
+                <th>Percentage played</th>
                 <th>Rating</th>
             </tr>
         </thead>
@@ -88,9 +95,15 @@
         var players = $('#leaderboard tbody');
 
         players.empty();
-        var template = _.template('<tr><td>{{ name }}</td><td>{{ (won) ? (won*100/played).toFixed(2) : 0 }}%</td><td>{{ won || 0 }}</td><td>{{ played }}</td><td>{{ rating }}</td></tr>');
+        var template = _.template('<td>{{ name }}</td><td>{{ (won) ? (won*100/played).toFixed(2) : 0 }}%</td><td>{{ won || 0 }}</td><td>{{ played }}</td><td>{{ percentagePlayed || 100 }}%</td><td>{{ displayRating || rating }}</td>');
         _.each(data, function(player) {
-            players.append(template(player));
+            playerHtml = player.rating > 0 ? '<tr style="color: black">' : '<tr style="color: grey">';
+            playerHtml += template(player);
+            if (player.played == 0) {
+                playerHtml += '<td style="width:20px"><img src="/img/sharp_grey_action_delete.png" alt="delete" onclick="deletePlayer(\''+player.id+'\')"></td>';
+            }
+            playerHtml += '</tr>';
+            players.append(playerHtml);
         });
         $('#submitbutton').removeAttr('disabled');
     }
@@ -118,14 +131,15 @@
         var games = $('#games tbody');
 
         _.each(data, function(game) {
-            games.append('<tr>');
-            games.append('<td>'+game.date+'</td>');
+            var gameHtml = '<tr>';
+            gameHtml += '<td>'+game.date+'</td>';
             _.each(participants, function(player) {
                 var points = _.has(game, 'player-'+player.name) ? game['player-'+player.name] : '';
-                games.append('<td>'+points +'</td>');
+                gameHtml += '<td>'+points +'</td>';
             });
-            games.append('<td><img src="/img/sharp_grey_action_delete.png" alt="delete" onclick="deleteGame(\''+game.id+'\')"></td>');
-            games.append('</tr>');
+            gameHtml += '<td><img src="/img/sharp_grey_action_delete.png" alt="delete" onclick="deleteGame(\''+game.id+'\')"></td>';
+            gameHtml += '</tr>';
+            games.append(gameHtml);
         });
 
         $( "#datepicker" ).datepicker({ "dateFormat":"dd/mm/yy"});
@@ -139,10 +153,19 @@
 
     function renderCompetition(data) {
         $('title,h1').text(data.name);
+        $('#competitionName').val(data.name);
+        $('#percentagePlayedThreshold').val(data.percentagePlayedThreshold);
+        $('#saveConfig').removeAttr('disabled');
+        $("#configureCompetition").hide();
+        $("#openConfiguration").show();
     }
 
     function deleteGame(id) {
         $.ajax({type: "DELETE", url: "/competitions/"+competitionId+'/games/'+id, success: getParticipants, dataType: "json" });
+    }
+
+    function deletePlayer(id) {
+        $.ajax({type: "DELETE", url: "/competitions/"+competitionId+'/participants/'+id, success: getParticipants, dataType: "json" });
     }
 
 
@@ -167,8 +190,23 @@
         return false;
     }
 
+    function saveConfig() {
+        $("#saveConfig").attr("disabled", "disabled");
+        $.post("/competitions/" + competitionId, $("#configureCompetition").serialize(), getParticipants, "json");
+        return false;
+    }
+
     $("#submitbutton").click(postParticipant);
     $("#addParticipant").submit(postParticipant);
+    $("#saveConfig").click(saveConfig);
+    $("#cancelConfig").click(function() {
+        $("#configureCompetition").hide();
+        $("#openConfiguration").show();
+    });
+    $("#openConfiguration").click(function() {
+        $("#configureCompetition").show();
+        $("#openConfiguration").hide();
+    });
 
 
 

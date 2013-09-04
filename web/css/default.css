@@ -38,11 +38,17 @@ h2 {
 #leaderboard {
     float: left;
     margin-right: 5em;
+    margin-top: 3em;
 }
 
 #leaderboard table {
     margin-bottom: 1em;
 }
+
+#games {
+    margin-top: 3em;
+}
+
 
 #games td{
     text-align: center;
