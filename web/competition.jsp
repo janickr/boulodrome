@@ -40,7 +40,7 @@
 <div style="text-align: center"><a href="#" id="openConfiguration">configure</a></div>
 <form accept-charset="utf-8" method="POST" id="configureCompetition" style="display:none; width:500px; margin-left: auto; margin-right: auto;">
     <p><label for="competitionName">Name of the competition:</label> <input type="text" name="name" id="competitionName" style="width: 100%"/></p>
-    <br><p><label for="percentagePlayedThreshold">Percentage of games you need to play to take your place in the player statistics (0%-100%):</label> <input type="text" size="4" name="percentagePlayedTreshold" id="percentagePlayedThreshold"/></p>
+    <br><p><label for="percentagePlayedThreshold">Percentage of games you need to play to take your place in the player statistics (0%-100%):</label> <input type="text" size="4" name="percentagePlayedThreshold" id="percentagePlayedThreshold"/></p>
     <br><div style="text-align: right"><input type="button" id="cancelConfig" value="Cancel"/><input type="button" id="saveConfig" value="Save Changes"/></div>
 </form>
 
